@@ -231,6 +231,7 @@ local default_plugins = {
   -- List of my custom plugins. Minimal setup.
   {
   {'ThePrimeagen/vim-be-good', lazy=false},
+  {'sindrets/diffview.nvim', lazy=false},
   {'christoomey/vim-tmux-navigator', lazy=false},
   {'mbbill/undotree', lazy=false},
   {'windwp/nvim-ts-autotag', lazy=false},
@@ -239,6 +240,7 @@ local default_plugins = {
   {'tpope/vim-fugitive', lazy=false},
   {'AckslD/nvim-neoclip.lua', lazy=false},
   {'ThePrimeagen/vim-apm', lazy=false},
+  {'andymass/vim-matchup', lazy=false},
   {"epwalsh/pomo.nvim", version = "*", lazy = true, cmd = { "TimerStart", "TimerRepeat" },
   dependencies = {
     "rcarriga/nvim-notify",
@@ -293,10 +295,10 @@ harpoon:setup()
 vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end)
 vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
 
-vim.keymap.set("n", "<C-y>", function() harpoon:list():select(1) end)
-vim.keymap.set("n", "<C-u>", function() harpoon:list():select(2) end)
-vim.keymap.set("n", "<C-i>", function() harpoon:list():select(3) end)
-vim.keymap.set("n", "<C-o>", function() harpoon:list():select(4) end)
+vim.keymap.set("n", "<leader>ha", function() harpoon:list():select(1) end)
+vim.keymap.set("n", "<leader>hs", function() harpoon:list():select(2) end)
+vim.keymap.set("n", "<leader>hd", function() harpoon:list():select(3) end)
+vim.keymap.set("n", "<leader>hf", function() harpoon:list():select(4) end)
 
 -- Toggle previous & next buffers stored within Harpoon list
 vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end)

@@ -12,6 +12,7 @@ M.general = {
   },
 
   n = {
+    ["<leader>py"] = {":w <bar> exec '!python3 '.shellescape('%')<CR>"},
     ["<Esc>"] = { "<cmd> noh <CR>", "Clear highlights" },
     -- switch between windows
     ["<C-h>"] = { "<cmd> TmuxNavigateLeft<CR>", "window left" },
@@ -24,6 +25,15 @@ M.general = {
     -- next/previous, centre
     ["n"] = {"nzzzv"},
     ["N"] = {"Nzzzv"},
+
+    -- Keep paste buffer
+    ["<leader>p"] = {"\"_dP"},
+
+    -- replace word 
+    ["<leader>s"] = {":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>"},
+
+    -- Undo Tree 
+    ["<leader>u"] = {"<cmd> UndotreeShow<CR>"},
     -- save
     ["<C-s>"] = { "<cmd> w <CR>", "Save file" },
     -- Copy all
@@ -63,6 +73,10 @@ M.general = {
     ["<Down>"] = { 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', "Move down", opts = { expr = true } },
     ["<"] = { "<gv", "Indent line" },
     [">"] = { ">gv", "Indent line" },
+    -- Move highlighted, auto-indent
+    ["J"] = {":m '>+1<CR>gv=gv"},
+    ["K"] = {":m '<-2<CR>gv=gv"},
+
   },
 
   x = {
@@ -340,21 +354,6 @@ M.nvterm = {
         require("nvterm.terminal").toggle "vertical"
       end,
       "Toggle vertical term",
-    },
-
-    -- new
-    ["<leader>h"] = {
-      function()
-        require("nvterm.terminal").new "horizontal"
-      end,
-      "New horizontal term",
-    },
-
-    ["<leader>v"] = {
-      function()
-        require("nvterm.terminal").new "vertical"
-      end,
-      "New vertical term",
     },
   },
 }
