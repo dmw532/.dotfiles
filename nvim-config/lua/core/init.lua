@@ -91,6 +91,7 @@ autocmd("BufWritePost", {
     require("plenary.reload").reload_module "custom.chadrc"
 
     config = require("core.utils").load_config()
+    vim.notify = require("notify")
 
     vim.g.nvchad_theme = config.ui.theme
     vim.g.transparency = config.ui.transparency
@@ -139,3 +140,5 @@ local new_cmd = vim.api.nvim_create_user_command
 new_cmd("NvChadUpdate", function()
   require "nvchad.updater"()
 end, {})
+
+

@@ -19,6 +19,19 @@ local default_plugins = {
   },
 
   {
+    "rcarriga/nvim-notify",
+	lazy=false,
+    config = function ()
+      require("notify").setup {
+        stages = 'fade_in_slide_out',
+        background_colour = 'FloatShadow',
+        timeout = 3000,
+      }
+      vim.notify = require('notify')
+    end
+  },
+
+  {
     "NvChad/nvterm",
     init = function()
       require("core.utils").load_mappings "nvterm"
@@ -26,19 +39,6 @@ local default_plugins = {
     config = function(_, opts)
       require "base46.term"
       require("nvterm").setup(opts)
-    end,
-  },
-
-  {
-    "NvChad/nvim-colorizer.lua",
-    event = "User FilePost",
-    config = function(_, opts)
-      require("colorizer").setup(opts)
-
-      -- execute colorizer as soon as possible
-      vim.defer_fn(function()
-        require("colorizer").attach_to_buffer(0)
-      end, 0)
     end,
   },
 
@@ -190,22 +190,17 @@ local default_plugins = {
       require("Comment").setup(opts)
     end,
   },
-
-  -- file managing , picker etc
+  
   {
-    "nvim-tree/nvim-tree.lua",
-    cmd = { "NvimTreeToggle", "NvimTreeFocus" },
-    init = function()
-      require("core.utils").load_mappings "nvimtree"
-    end,
-    opts = function()
-      return require "plugins.configs.nvimtree"
-    end,
-    config = function(_, opts)
-      dofile(vim.g.base46_cache .. "nvimtree")
-      require("nvim-tree").setup(opts)
-    end,
-  },
+  'stevearc/oil.nvim',
+  ---@module 'oil'
+  ---@type oil.SetupOpts
+  opts = {},
+  -- Optional dependencies
+  dependencies = { { "echasnovski/mini.icons", opts = {} } },
+  -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
+ lazy=false,
+},
 
   {
     "nvim-telescope/telescope.nvim",
@@ -231,9 +226,13 @@ local default_plugins = {
   -- List of my custom plugins. Minimal setup.
   {
   {'ThePrimeagen/vim-be-good', lazy=false},
+  {'jinh0/eyeliner.nvim', highlight_on_key  = true, dim = false, max_length=9999, default_keymaps = true, lazy=false},
   {'sindrets/diffview.nvim', lazy=false},
   {'christoomey/vim-tmux-navigator', lazy=false},
   {'mbbill/undotree', lazy=false},
+{
+  "folke/drop.nvim", theme = "cyberpunk", lazy=false
+},
   {'windwp/nvim-ts-autotag', lazy=false},
   {'tpope/vim-surround', lazy=false},
   {'tpope/vim-commentary', lazy=false},
@@ -246,7 +245,31 @@ local default_plugins = {
     "rcarriga/nvim-notify",
     },
   },
-  {'epwalsh/obsidian.nvim', version = '*', lazy = true, ft = 'markdown',
+
+ -- {
+ --  "epwalsh/obsidian.nvim",
+ --  version = "*",  -- recommended, use latest release instead of latest commit
+ --  ft = "markdown",
+ --  dependencies = {
+ --    -- Required.
+ --    "nvim-lua/plenary.nvim",
+
+ --    -- see below for full list of optional dependencies 👇
+ --  },
+ --  opts = {
+ --    workspaces = {
+ --      {
+ --        name = "work",
+ --        path = "~/Documents/Vaults/Second Brain/",
+ --      },
+ --    },
+
+ --    -- see below for full list of options 👇
+ --  },
+-- lazy = false,
+-- },
+
+  {'epwalsh/obsidian.nvim', version = '*', lazy = false, ft = 'markdown',
     dependencies = {
     -- Required.
     'nvim-lua/plenary.nvim',
@@ -265,6 +288,20 @@ local default_plugins = {
       branch="harpoon2",
       dependencies={"nvim-lua/plenary.nvim"}
     },
+{
+  "danielfalk/smart-open.nvim",
+  branch = "0.2.x",
+  config = function()
+    require("telescope").load_extension("smart_open")
+  end,
+  dependencies = {
+    "kkharji/sqlite.lua",
+    -- Only required if using match_algorithm fzf
+    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+    -- Optional.  If installed, native fzy will be used when match_algorithm is fzy
+    { "nvim-telescope/telescope-fzy-native.nvim" },
+  },
+},
   },
   -- Only load whichkey after all the gui
   {
@@ -303,5 +340,7 @@ vim.keymap.set("n", "<leader>hf", function() harpoon:list():select(4) end)
 -- Toggle previous & next buffers stored within Harpoon list
 vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end)
 vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end)
+
+vim.keymap.set("n", "<leader>e", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
 
